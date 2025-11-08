@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>قطاع عمليات وسط الرياض</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Tajawal:wght@300;400;700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --page-bg: #0f1724;
+      --card-bg: #0b1220;
+      --text: #e6eef8;
+      --muted: #98a8bf;
+      --accent: #2dd4bf;
+      --btn-bg: #12323a;
+      --btn-text: #e6eef8;
+      --btn-shadow: rgba(0,0,0,0.6);
+      --font-family: "Cairo", "Tajawal", "Roboto", "Segoe UI", Tahoma, Arial, sans-serif;
+      --adbar-bg: #0b1220;
+      --adbar-text: #2dd4bf;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font-family);
+      background:var(--page-bg);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+    header{display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border-bottom:1px solid rgba(255,255,255,0.03); position:sticky; top:0; z-index:50;}
+    .brand{font-weight:800; font-size:16px}
+    nav a{color:var(--text); text-decoration:none; margin-left:14px; font-weight:700; padding:8px;border-radius:8px}
+    nav a:hover{ background: rgba(255,255,255,0.02) }
+
+    main{flex:1; padding:28px 18px; display:flex; justify-content:center;}
+    .container{width:100%; max-width:1100px; display:flex; flex-direction:column; gap:18px;}
+
+    /* title 3D */
+    .title-wrap{display:flex; justify-content:center; align-items:center; padding:36px 12px}
+    .title{font-size:56px; font-weight:900; text-align:center; line-height:1; color:var(--text); position:relative; letter-spacing:1px;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 6px 0 rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.6), -6px -6px 14px rgba(255,255,255,0.02);
+    }
+    .title:after{ content:""; display:block; height:6px; width:160px; margin:12px auto 0; border-radius:6px; background:var(--accent); opacity:0.95}
+
+    /* card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.02)}
+
+    /* ad bar */
+    .ad-bar{background:var(--adbar-bg); border-radius:10px; padding:10px 14px; display:flex; gap:12px; align-items:center; overflow:hidden; border:1px solid rgba(255,255,255,0.02)}
+    .ad-label{font-size:13px; color:var(--adbar-text); min-width:60px; text-align:right}
+    .ad-marquee{white-space:nowrap; display:inline-block; color:var(--adbar-text); font-weight:800; will-change:transform}
+
+    /* quick links grid */
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:10px}
+    .btn-3d{display:flex; align-items:center; justify-content:center; gap:10px; padding:14px; border-radius:12px; cursor:pointer; user-select:none; font-weight:800;
+      background:var(--btn-bg); color:var(--btn-text); border:none;
+      box-shadow: 0 8px 0 var(--btn-shadow), 0 16px 30px rgba(0,0,0,0.45);
+      transform:translateY(0); transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn-3d:active{ transform:translateY(6px); box-shadow: 0 2px 0 var(--btn-shadow), 0 8px 18px rgba(0,0,0,0.35) }
+    .btn-3d img{width:22px; height:22px; object-fit:cover; border-radius:4px}
+    .btn-3d .title-txt{font-size:16px}
+
+    footer{padding:12px 18px; text-align:center; color:var(--muted); font-size:13px}
+
+    /* showcase - full image no background, show dims */
+    #showcase-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; align-items:start}
+    .show-item{display:flex; flex-direction:column; align-items:center; gap:8px; min-height:160px; padding:6px; border-radius:8px}
+    .show-item img{width:100%; height:auto; object-fit:contain; border-radius:4px; background:transparent}
+    .img-dim{color:var(--muted); font-size:13px}
+
+    /* admin modal & area */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); z-index:120}
+    .modal.open{display:flex}
+    .modal .panel{width:480px; max-width:96%; padding:16px; border-radius:10px; background:linear-gradient(180deg,#07101a,#04101a); border:1px solid rgba(255,255,255,0.03)}
+    .field{display:flex; flex-direction:column; gap:6px; margin-bottom:10px}
+    input[type="text"], input[type="password"], select, input[type="color"]{padding:10px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.05); color:var(--text)}
+    .row{display:flex; gap:8px}
+    .btn{padding:10px 12px; border-radius:8px; cursor:pointer; font-weight:800; border:none}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text)}
+
+    /* admin dashboard layout */
+    .admin-layout{display:grid; grid-template-columns:260px 1fr; gap:12px; align-items:start}
+    .admin-nav{display:flex; flex-direction:column; gap:8px}
+    .admin-nav button{padding:10px; border-radius:8px; background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.03); cursor:pointer; text-align:right; font-weight:700}
+
+    .small{font-size:13px; color:var(--muted)}
+
+    @media (max-width:720px){ .title{font-size:36px} .admin-layout{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">قطاع عمليات وسط الرياض</div>
+    <nav>
+      <a href="#/" id="nav-home">الصفحة الرئيسية</a>
+      <a href="#/showcase" id="nav-showcase">لوحة التميز</a>
+      <a href="#/admin" id="nav-admin">لوحة التحكم</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Home -->
+      <section id="page-home">
+        <div class="title-wrap card">
+          <div class="title">قطاع عمليات وسط الرياض</div>
+        </div>
+
+        <div id="ad-container" class="card ad-bar" style="align-items:center; background:var(--adbar-bg);">
+          <div id="ad-label" class="ad-label">إعلان</div>
+          <div style="flex:1; overflow:hidden">
+            <div id="adText" class="ad-marquee"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0;color:var(--accent)">روابط سريعة</h3>
+          <div class="grid" id="quick-links"></div>
+        </div>
+      </section>
+
+      <!-- Showcase -->
+      <section id="page-showcase" style="display:none">
+        <div class="card">
+          <h3 style="margin:0;color:var(--accent)">لوحة التميز</h3>
+          <div id="showcase-grid" class="mb" style="margin-top:12px"></div>
+          <div id="showcase-note" class="small" style="margin-top:8px; display:none"></div>
+        </div>
+      </section>
+
+      <!-- Admin (hidden until logged in) -->
+      <section id="page-admin" style="display:none">
+        <div class="card">
+          <h3 style="margin:0;color:var(--accent)">لوحة التحكم</h3>
+          <div style="margin-top:12px" id="admin-area">
+            <div class="admin-layout">
+              <div class="admin-nav">
+                <button data-tab="appearance">المظهر (ألوان، خط)</button>
+                <button data-tab="links">إدارة الروابط</button>
+                <button data-tab="ads">الإعلانات</button>
+                <button data-tab="showcase">لوحة التميز</button>
+                <button data-tab="account">الحساب</button>
+                <button data-tab="export">حفظ/استعادة</button>
+                <div style="height:6px"></div>
+                <div class="small">الحالة: <span id="admin-status">غير مسجل</span></div>
+              </div>
+
+              <div style="min-height:240px">
+
+                <div id="tab-appearance" class="tab" style="display:none">
+                  <div class="field">
+                    <label>لون الصفحة (خلفية)</label>
+                    <input type="color" id="inp-page-bg" value="#0f1724">
+                  </div>
+                  <div class="field">
+                    <label>لون النص الرئيسي</label>
+                    <input type="color" id="inp-text" value="#e6eef8">
+                  </div>
+                  <div class="field">
+                    <label>لون زر الخلفية</label>
+                    <input type="color" id="inp-btn-bg" value="#12323a">
+                  </div>
+                  <div class="field">
+                    <label>لون نص الأزرار</label>
+                    <input type="color" id="inp-btn-text" value="#e6eef8">
+                  </div>
+                  <div class="field">
+                    <label>لون ظل الأزرار (يعطي تأثير العمق)</label>
+                    <input type="color" id="inp-btn-shadow" value="#000000">
+                  </div>
+                  <div class="field">
+                    <label>لون التمييز (Accent)</label>
+                    <input type="color" id="inp-accent" value="#2dd4bf">
+                  </div>
+                  <div class="field">
+                    <label>لون شريط الإعلان</label>
+                    <input type="color" id="inp-adbar-bg" value="#0b1220">
+                  </div>
+                  <div class="field">
+                    <label>لون نص شريط الإعلان</label>
+                    <input type="color" id="inp-adbar-text" value="#2dd4bf">
+                  </div>
+                  <div class="field">
+                    <label>اختيار الخط</label>
+                    <select id="inp-font">
+                      <option value='"Cairo", "Segoe UI", Arial'>Cairo</option>
+                      <option value='"Tajawal", "Segoe UI", Arial'>Tajawal</option>
+                      <option value='"Roboto", "Segoe UI", Arial'>Roboto</option>
+                      <option value='"Segoe UI", Tahoma, Arial'>System UI</option>
+                      <option value='Georgia, "Times New Roman", serif'>Serif - Georgia</option>
+                      <option value='"Courier New", Courier, monospace'>Monospace</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <button class="btn" id="save-appearance">حفظ المظهر</button>
+                    <button class="btn ghost" id="reset-appearance">استعادة الافتراضي</button>
+                  </div>
+                </div>
+
+                <div id="tab-links" class="tab" style="display:none">
+                  <div class="field">
+                    <label>اضف رابط جديد</label>
+                    <input type="text" id="new-link-title" placeholder="اسم الرابط">
+                    <input type="text" id="new-link-url" placeholder="الرابط (أو #)">
+                    <input type="text" id="new-link-icon" placeholder="أيقونة (إيموجي أو رابط صورة)">
+                    <div class="small">مثال أيقونة: 🔔 أو https://example.com/icon.png</div>
+                    <div style="margin-top:8px" class="row">
+                      <button class="btn" id="add-link">اضف الرابط</button>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>الروابط الحالية</label>
+                    <div id="links-list" class="small"></div>
+                  </div>
+                </div>
+
+                <div id="tab-ads" class="tab" style="display:none">
+                  <div class="field">
+                    <label>نص شريط الإعلان</label>
+                    <input type="text" id="ads-text" placeholder="نص الإعلان">
+                  </div>
+                  <div class="field">
+                    <label>وضع العرض</label>
+                    <select id="ads-mode"><option value="marquee">شريط متحرك</option><option value="static">نص ثابت</option></select>
+                  </div>
+                  <div class="row">
+                    <button class="btn" id="save-ads">حفظ</button>
+                    <button class="btn ghost" id="clear-ads">مسح</button>
+                  </div>
+                  <div class="small" style="margin-top:8px">
+                    توصية المشرف: 1200 × 800 بكسل، WebP/JPEG أقل من 300KB، 3-8 صور
+                  </div>
+                </div>
+
+                <div id="tab-showcase" class="tab" style="display:none">
+                  <div class="field">
+                    <label>ارفع صورة للوحة التميز</label>
+                    <input type="file" id="showcase-file" accept="image/*">
+                  </div>
+                  <div class="row" style="margin-bottom:8px"><button class="btn" id="upload-showcase">رفع</button></div>
+                  <div class="field">
+                    <label>الصور الحالية (يمكن الحذف من هنا فقط)</label>
+                    <div id="showcase-list" class="small"></div>
+                  </div>
+                </div>
+
+                <div id="tab-account" class="tab" style="display:none">
+                  <div class="field">
+                    <label>تسجيل الدخول</label>
+                    <input type="text" id="login-user" placeholder="اسم المستخدم">
+                    <input type="password" id="login-pass" placeholder="كلمة المرور">
+                    <div class="row" style="margin-top:6px">
+                      <button class="btn" id="btn-login">تسجيل</button>
+                      <button class="btn ghost" id="btn-logout">خروج</button>
+                    </div>
+                  </div>
+                  <hr style="opacity:0.06" />
+                  <div class="field">
+                    <label>تغيير بيانات الدخول (يجب أن تكون مسجلاً)</label>
+                    <input type="text" id="chg-user" placeholder="اسم مستخدم جديد">
+                    <input type="password" id="chg-pass" placeholder="كلمة مرور جديدة">
+                    <div class="row" style="margin-top:6px"><button class="btn" id="change-cred">تحديث</button></div>
+                  </div>
+                </div>
+
+                <div id="tab-export" class="tab" style="display:none">
+                  <div class="field">
+                    <label>نسخ احتياطي - تنزيل</label>
+                    <button class="btn" id="export-json">تنزيل</button>
+                  </div>
+                  <div class="field">
+                    <label>استعادة من ملف</label>
+                    <input type="file" id="import-file" accept="application/json">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>منصة قطاع عمليات وسط الرياض</footer>
+
+  <!-- Login modal (gate) -->
+  <div id="modal-login" class="modal">
+    <div class="panel">
+      <h3 style="margin-top:0">دخول المشرف</h3>
+      <div class="field"><label>اسم المستخدم</label><input id="m-user" type="text" value=""></div>
+      <div class="field"><label>كلمة المرور</label><input id="m-pass" type="password" value=""></div>
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px"><button class="btn ghost" id="m-cancel">إلغاء</button><button class="btn" id="m-login">دخول</button></div>
+      <div id="m-msg" class="small" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+<script>
+/* ===== IndexedDB helper for storing images (blobs) ===== */
+const IMG_DB_NAME = 'ops-wa-images';
+const IMG_STORE = 'images';
+function openImgDB(){ return new Promise((resolve,reject)=>{ const req = indexedDB.open(IMG_DB_NAME,1); req.onupgradeneeded = (e)=>{ const db = e.target.result; if(!db.objectStoreNames.contains(IMG_STORE)) db.createObjectStore(IMG_STORE); }; req.onsuccess = ()=> resolve(req.result); req.onerror = ()=> reject(req.error); }); }
+function putImageBlob(key, blob){ return openImgDB().then(db=> new Promise((resolve,reject)=>{ const tx = db.transaction(IMG_STORE,'readwrite'); const store = tx.objectStore(IMG_STORE); const r = store.put(blob, key); r.onsuccess = ()=>{ resolve(true); db.close(); }; r.onerror = ()=>{ reject(r.error); db.close(); }; })); }
+function getImageBlob(key){ return openImgDB().then(db=> new Promise((resolve,reject)=>{ const tx = db.transaction(IMG_STORE,'readonly'); const store = tx.objectStore(IMG_STORE); const r = store.get(key); r.onsuccess = ()=>{ resolve(r.result); db.close(); }; r.onerror = ()=>{ reject(r.error); db.close(); }; })); }
+function deleteImageBlob(key){ return openImgDB().then(db=> new Promise((resolve,reject)=>{ const tx = db.transaction(IMG_STORE,'readwrite'); const store = tx.objectStore(IMG_STORE); const r = store.delete(key); r.onsuccess = ()=>{ resolve(true); db.close(); }; r.onerror = ()=>{ reject(r.error); db.close(); }; })); }
+
+/* ===== App state & defaults ===== */
+const STORAGE_KEY = 'ops-wa-center-final';
+const DEFAULTS = {
+  appearance: { pageBg:'#0f1724', cardBg:'#0b1220', text:'#e6eef8', accent:'#2dd4bf', btnBg:'#12323a', btnText:'#e6eef8', btnShadow:'#000000', font:'"Cairo", "Tajawal", "Roboto", "Segoe UI", Arial' },
+  links: [ {title:'حجز الإجازات', url:'#', icon:'📅'}, {title:'التشييك اليومي', url:'#', icon:'📝'}, {title:'تبديل المناوبات', url:'#', icon:'🔄'}, {title:'الاقتراحات', url:'#', icon:'💡'} ],
+  ads: { text:'', mode:'marquee', adBarBg:'#0b1220', adBarText:'#2dd4bf' },
+  showcase: [], // entries: { type:'blob'|'data', id?, dataUrl?, name? }
+  auth: { user:'admin', passHash: null }
+};
+function simpleHash(s){ return btoa(unescape(encodeURIComponent(s))).slice(0,64) }
+function loadState(){ try{ const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }catch(e){ return null; } }
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+let state = loadState();
+function initDefaults(){ if(!state){ DEFAULTS.auth.passHash = simpleHash('admin123'); state = DEFAULTS; saveState(); } else { if(!state.appearance) state.appearance = DEFAULTS.appearance; if(!state.links) state.links = DEFAULTS.links; if(!state.ads) state.ads = DEFAULTS.ads; if(!state.showcase) state.showcase = []; if(!state.auth) state.auth = { user:'admin', passHash: simpleHash('admin123') }; } }
+
+/* ===== Apply appearance variables ===== */
+function applyAppearance(){ const a = state.appearance; if(!a) return; document.documentElement.style.setProperty('--page-bg', a.pageBg); document.documentElement.style.setProperty('--card-bg', a.cardBg); document.documentElement.style.setProperty('--text', a.text); document.documentElement.style.setProperty('--accent', a.accent); document.documentElement.style.setProperty('--btn-bg', a.btnBg); document.documentElement.style.setProperty('--btn-text', a.btnText); document.documentElement.style.setProperty('--btn-shadow', a.btnShadow); document.documentElement.style.setProperty('--font-family', a.font); // ad bar colors (in state.ads)
+  const adBg = (state.ads && state.ads.adBarBg) ? state.ads.adBarBg : '#0b1220'; const adText = (state.ads && state.ads.adBarText) ? state.ads.adBarText : '#2dd4bf'; document.documentElement.style.setProperty('--adbar-bg', adBg); document.documentElement.style.setProperty('--adbar-text', adText); // update inputs
+  const el = document.getElementById('inp-page-bg'); if(el) el.value = a.pageBg; const et = document.getElementById('inp-text'); if(et) et.value = a.text; const eb = document.getElementById('inp-btn-bg'); if(eb) eb.value = a.btnBg; const ebt = document.getElementById('inp-btn-text'); if(ebt) ebt.value = a.btnText; const es = document.getElementById('inp-btn-shadow'); if(es) es.value = a.btnShadow; const ea = document.getElementById('inp-accent'); if(ea) ea.value = a.accent; const ef = document.getElementById('inp-font'); if(ef) ef.value = a.font; const abg = document.getElementById('inp-adbar-bg'); if(abg) abg.value = (state.ads && state.ads.adBarBg) ? state.ads.adBarBg : '#0b1220'; const at = document.getElementById('inp-adbar-text'); if(at) at.value = (state.ads && state.ads.adBarText) ? state.ads.adBarText : '#2dd4bf'; }
+
+/* ===== Render links ===== */
+function renderLinks(){ const cont = document.getElementById('quick-links'); if(!cont) return; cont.innerHTML = ''; (state.links||[]).forEach((l,idx)=>{ const btn = document.createElement('div'); btn.className='btn-3d'; if(l.icon){ if(/^https?:\/\//i.test(l.icon) || l.icon.startsWith('data:')){ const img=document.createElement('img'); img.src=l.icon; img.alt=''; btn.appendChild(img); } else { const sp=document.createElement('span'); sp.textContent=l.icon; sp.style.fontSize='20px'; btn.appendChild(sp); } } const t=document.createElement('span'); t.className='title-txt'; t.textContent=l.title; btn.appendChild(t); btn.onclick=()=>{ if(l.url && l.url!=='#') window.open(l.url,'_blank'); else alert('هذا زر داخلي: '+l.title); }; cont.appendChild(btn); }); }
+
+/* ===== Marquee: dynamic animation using Web Animations API ===== */
+let marqueeAnim = null;
+function startMarquee(){ const container = document.getElementById('ad-container'); const adText = document.getElementById('adText'); if(!container || !adText) return; if(marqueeAnim){ try{ marqueeAnim.cancel(); }catch(e){} marqueeAnim=null; } const txt = (state.ads && state.ads.text) ? state.ads.text.trim() : ''; adText.textContent = txt || ''; if(!txt){ document.getElementById('ad-label').style.display='none'; container.style.display='none'; return; } // ensure visible
+  document.getElementById('ad-label').style.display=''; container.style.display=''; adText.style.whiteSpace='nowrap'; adText.style.display='inline-block'; adText.style.willChange='transform'; adText.style.transform='translateX(0)'; requestAnimationFrame(()=>{ const containerWidth = container.clientWidth; const textWidth = adText.scrollWidth; const distance = containerWidth + textWidth; const pixelsPerSecond = 120; const durationMs = Math.max(1000, Math.round((distance / pixelsPerSecond) * 1000)); marqueeAnim = adText.animate([ { transform: `translateX(${containerWidth}px)` }, { transform: `translateX(${-textWidth}px)` } ], { duration: durationMs, iterations: Infinity, easing: 'linear' }); marqueeAnim.oncancel = ()=>{ marqueeAnim=null; }; }); }
+function setupMarqueeHooks(){ startMarquee(); let resizeTimer = null; window.addEventListener('resize', ()=>{ if(resizeTimer) clearTimeout(resizeTimer); resizeTimer = setTimeout(()=>{ startMarquee(); resizeTimer=null; },150); }); }
+
+/* ===== Showcase rendering using IndexedDB blobs and data URLs ===== */
+function renderShowcase(){ const grid=document.getElementById('showcase-grid'); if(!grid) return; grid.innerHTML=''; if(!state.showcase||state.showcase.length===0){ const p=document.createElement('div'); p.className='small'; p.textContent='لا توجد صور في لوحة التميز.'; grid.appendChild(p); return; } state.showcase.forEach((entry,i)=>{ if(!entry) return; if(entry.type==='data' && entry.dataUrl){ appendImageToShowcase(entry.dataUrl,i,entry.name); } else if(entry.type==='blob' && entry.id){ getImageBlob(entry.id).then(blob=>{ if(!blob){ const p=document.createElement('div'); p.className='small'; p.textContent='صورة غير متوفرة'; grid.appendChild(p); return; } const url = URL.createObjectURL(blob); appendImageToShowcase(url,i,entry.name); }).catch(err=>{ console.error('getImageBlob err',err); const p=document.createElement('div'); p.className='small'; p.textContent='خطأ في تحميل الصورة'; grid.appendChild(p); }); } }); }
+function appendImageToShowcase(src, idx, name){ const grid=document.getElementById('showcase-grid'); const item=document.createElement('div'); item.className='show-item'; const img=document.createElement('img'); img.src=src; img.alt = name || ('image-'+(idx+1)); img.addEventListener('load', ()=>{ const w=img.naturalWidth, h=img.naturalHeight; let dim=item.querySelector('.img-dim'); if(!dim){ dim=document.createElement('div'); dim.className='img-dim'; item.appendChild(dim); } dim.textContent = `مقاس الصورة: ${w} × ${h} بكسل`; }); item.appendChild(img); grid.appendChild(item); }
+
+/* ===== Admin: showcase upload using IndexedDB ===== */
+function handleShowcaseUpload(){ const f=document.getElementById('showcase-file').files[0]; if(!f){ alert('اختر ملف'); return; } const key = 'img-'+Date.now()+'-'+Math.floor(Math.random()*10000); putImageBlob(key,f).then(()=>{ state.showcase.push({ type:'blob', id:key, name:f.name }); saveState(); renderShowcase(); renderShowcaseList(); alert('تم رفع الصورة'); document.getElementById('showcase-file').value=''; }).catch(err=>{ console.error(err); alert('فشل رفع الصورة — قد تكون مساحة المتصفح ممتلئة'); }); }
+def dummy(){}
+function renderShowcaseList(){ const wrap=document.getElementById('showcase-list'); if(!wrap) return; wrap.innerHTML=''; if(!state.showcase||state.showcase.length===0){ wrap.textContent='لا توجد صور.'; return; } state.showcase.forEach((entry,i)=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center'; row.style.marginBottom='8px'; const left=document.createElement('div'); const label = entry.name ? entry.name : (entry.id || 'صورة '+(i+1)); left.innerHTML = `<div>${i+1}. ${label}</div><div style="color:var(--muted); font-size:13px">${entry.type==='blob'?'مخزنة محلياً (blob)':'dataURL'}</div>`; const right=document.createElement('div'); const del=document.createElement('button'); del.textContent='حذف'; del.className='btn ghost'; del.onclick = ()=>{ if(!confirm('تأكيد حذف الصورة؟')) return; if(entry.type==='blob' && entry.id){ deleteImageBlob(entry.id).then(()=>{ state.showcase.splice(i,1); saveState(); renderShowcase(); renderShowcaseList(); }).catch(err=>{ console.error('deleteImageBlob',err); alert('فشل حذف الصورة من التخزين المحلي'); }); } else { state.showcase.splice(i,1); saveState(); renderShowcase(); renderShowcaseList(); } }; right.appendChild(del); row.appendChild(left); row.appendChild(right); wrap.appendChild(row); }); }
+
+/* ===== Admin auth, links, ads, appearance control, navigation (integrated) ===== */
+let isAdmin = false;
+function loginAdmin(u,p){ if(!u||!p) return false; const ok = (u===state.auth.user && simpleHash(p)===state.auth.passHash); if(ok){ isAdmin=true; document.getElementById('admin-status').textContent='مسجّل'; } else { isAdmin=false; } return ok; }
+function logoutAdmin(){ isAdmin=false; document.getElementById('admin-status').textContent='غير مسجل'; }
+
+function renderLinksList(){ const wrap=document.getElementById('links-list'); if(!wrap) return; wrap.innerHTML=''; (state.links||[]).forEach((l,idx)=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center'; row.style.marginBottom='8px'; const left=document.createElement('div'); left.style.textAlign='right'; left.innerHTML = `<strong>${idx+1}. ${l.title}</strong> <div style="color:var(--muted); font-size:13px">${l.url}</div>` + (l.icon? `<div style="color:var(--muted); font-size:13px">أيقونة: ${l.icon}</div>` : ''); const right=document.createElement('div'); const edit=document.createElement('button'); edit.textContent='تعديل'; edit.className='btn ghost'; edit.onclick = ()=>{ const t=prompt('اسم الرابط', l.title); if(t==null) return; const u=prompt('الرابط (URL)', l.url); if(u==null) return; const ic=prompt('الأيقونة (إيموجي أو رابط)', l.icon||''); if(ic==null) return; state.links[idx] = { title: t, url: u, icon: ic }; saveState(); renderLinks(); renderLinksList(); }; const del=document.createElement('button'); del.textContent='حذف'; del.className='btn ghost'; del.onclick = ()=>{ if(confirm('حذف الرابط؟')){ state.links.splice(idx,1); saveState(); renderLinks(); renderLinksList(); } }; right.appendChild(edit); right.appendChild(del); row.appendChild(left); row.appendChild(right); wrap.appendChild(row); }); }
+
+/* Navigation gate */
+function showPage(name){ if(name==='admin' && !isAdmin){ document.getElementById('modal-login').classList.add('open'); document.getElementById('page-home').style.display=''; document.getElementById('page-showcase').style.display='none'; document.getElementById('page-admin').style.display='none'; location.hash = '#/'; return; } document.getElementById('page-home').style.display = name==='home' ? '' : 'none'; document.getElementById('page-showcase').style.display = name==='showcase' ? '' : 'none'; document.getElementById('page-admin').style.display = name==='admin' ? '' : 'none'; location.hash = name==='home' ? '#/' : '#/'+name; }
+
+/* Wire UI on DOMContentLoaded */
+document.addEventListener('DOMContentLoaded', ()=>{
+  initDefaults();
+  applyAppearance();
+  renderLinks();
+  renderAds();
+  renderShowcase();
+  renderLinksList();
+  renderShowcaseList();
+  setupMarqueeHooks();
+
+  const start = location.hash.replace('#/','') || 'home';
+  showPage(start);
+  window.addEventListener('hashchange', ()=>{ const h = location.hash.replace('#/','') || 'home'; showPage(h); });
+
+  document.querySelectorAll('.admin-nav button').forEach(btn=> btn.addEventListener('click', ()=>{ const tab = btn.getAttribute('data-tab'); document.querySelectorAll('.tab').forEach(t=> t.style.display='none'); document.getElementById('tab-'+tab).style.display=''; }));
+
+  // appearance inputs initial values
+  document.getElementById('inp-page-bg').value = state.appearance.pageBg;
+  document.getElementById('inp-text').value = state.appearance.text;
+  document.getElementById('inp-btn-bg').value = state.appearance.btnBg;
+  document.getElementById('inp-btn-text').value = state.appearance.btnText;
+  document.getElementById('inp-btn-shadow').value = state.appearance.btnShadow;
+  document.getElementById('inp-accent').value = state.appearance.accent;
+  document.getElementById('inp-font').value = state.appearance.font;
+  document.getElementById('inp-adbar-bg').value = (state.ads && state.ads.adBarBg) ? state.ads.adBarBg : '#0b1220';
+  document.getElementById('inp-adbar-text').value = (state.ads && state.ads.adBarText) ? state.ads.adBarText : '#2dd4bf';
+
+  document.getElementById('save-appearance').onclick = ()=>{
+    state.appearance.pageBg = document.getElementById('inp-page-bg').value;
+    state.appearance.text = document.getElementById('inp-text').value;
+    state.appearance.btnBg = document.getElementById('inp-btn-bg').value;
+    state.appearance.btnText = document.getElementById('inp-btn-text').value;
+    state.appearance.btnShadow = document.getElementById('inp-btn-shadow').value;
+    state.appearance.accent = document.getElementById('inp-accent').value;
+    state.appearance.font = document.getElementById('inp-font').value;
+    state.ads.adBarBg = document.getElementById('inp-adbar-bg').value;
+    state.ads.adBarText = document.getElementById('inp-adbar-text').value;
+    saveState(); applyAppearance(); startMarquee(); alert('تم حفظ المظهر');
+  };
+
+  document.getElementById('reset-appearance').onclick = ()=>{ if(confirm('استعادة القيم الافتراضية؟')){ state.appearance = DEFAULTS.appearance; state.ads = DEFAULTS.ads; saveState(); applyAppearance(); renderLinks(); renderAds(); } };
+
+  // links add
+  document.getElementById('add-link').onclick = ()=>{
+    const t = document.getElementById('new-link-title').value.trim();
+    const u = document.getElementById('new-link-url').value.trim() || '#';
+    const ic = document.getElementById('new-link-icon').value.trim() || '';
+    if(!t){ alert('أدخل اسم الرابط'); return; }
+    state.links.push({ title: t, url: u, icon: ic });
+    saveState(); renderLinks(); renderLinksList();
+    document.getElementById('new-link-title').value=''; document.getElementById('new-link-url').value=''; document.getElementById('new-link-icon').value='';
+  };
+
+  // ads controls
+  document.getElementById('ads-text').value = state.ads.text;
+  document.getElementById('ads-mode').value = state.ads.mode;
+  document.getElementById('save-ads').onclick = ()=>{
+    state.ads.text = document.getElementById('ads-text').value || '';
+    state.ads.mode = document.getElementById('ads-mode').value;
+    saveState(); renderAds(); startMarquee(); alert('تم حفظ الإعلان');
+  };
+  document.getElementById('clear-ads').onclick = ()=>{ if(confirm('مسح الإعلان؟')){ state.ads.text = ''; saveState(); renderAds(); startMarquee(); document.getElementById('ads-text').value = state.ads.text; } };
+
+  // showcase upload wiring
+  document.getElementById('upload-showcase').onclick = handleShowcaseUpload;
+
+  // export/import
+  document.getElementById('export-json').onclick = ()=>{ const data = JSON.stringify(state,null,2); const blob = new Blob([data], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ops-wa-center-backup.json'; a.click(); URL.revokeObjectURL(url); };
+  document.getElementById('import-file').onchange = (e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const imported=JSON.parse(ev.target.result); if(confirm('استبدال الإعدادات الحالية؟')){ state=imported; saveState(); applyAppearance(); renderLinks(); renderAds(); renderShowcase(); renderLinksList(); renderShowcaseList(); alert('تم الاستيراد'); } }catch(err){ alert('ملف غير صالح'); } }; r.readAsText(f); };
+
+  // account
+  document.getElementById('btn-login').onclick = ()=>{ const u=document.getElementById('login-user').value.trim(); const p=document.getElementById('login-pass').value; if(loginAdmin(u,p)){ alert('تم تسجيل الدخول'); document.getElementById('admin-status').textContent='مسجّل'; renderLinksList(); } else alert('فشل تسجيل الدخول'); };
+  document.getElementById('btn-logout').onclick = ()=>{ logoutAdmin(); alert('تم تسجيل الخروج'); };
+
+  document.getElementById('change-cred').onclick = ()=>{ if(!isAdmin){ alert('يجب تسجيل الدخول'); return; } const nu=document.getElementById('chg-user').value.trim(); const np=document.getElementById('chg-pass').value; if(!nu||!np){ alert('أدخل اسم مستخدم و كلمة مرور جديدة'); return; } state.auth.user=nu; state.auth.passHash=simpleHash(np); saveState(); alert('تم تحديث بيانات الدخول'); };
+
+  // modal gate login
+  document.getElementById('m-login').onclick = ()=>{ const u=document.getElementById('m-user').value; const p=document.getElementById('m-pass').value; if(loginAdmin(u,p)){ document.getElementById('modal-login').classList.remove('open'); document.getElementById('m-msg').textContent=''; showPage('admin'); document.getElementById('admin-status').textContent='مسجّل'; } else { document.getElementById('m-msg').textContent='بيانات غير صحيحة'; } };
+  document.getElementById('m-cancel').onclick = ()=> document.getElementById('modal-login').classList.remove('open');
+
+  // header nav admin open gate
+  document.getElementById('nav-admin').addEventListener('click', (e)=>{ e.preventDefault(); showPage('admin'); });
+
+  // initial apply
+  applyAppearance();
+  startMarquee();
+});
+
+// quick init in case loaded earlier
+initDefaults();
+applyAppearance();
+renderLinks();
+renderAds();
+renderShowcase();
+renderLinksList();
+renderShowcaseList();
+setupMarqueeHooks();
+</script>
+
+</body>
+</html>
